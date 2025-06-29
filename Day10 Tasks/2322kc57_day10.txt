@@ -1,0 +1,227 @@
+MariaDB [fsd_tasks]> show tables;
++---------------------+
+| Tables_in_fsd_tasks |
++---------------------+
+| books               |
+| course              |
+| department          |
+| emp                 |
+| issuerecords        |
+| memebers            |
+| student             |
++---------------------+
+7 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select * from student;
++--------+----------+-------+------+
+| Rollno | Name     | Dept  | mark |
++--------+----------+-------+------+
+|      1 | Thiru    | cs    |   90 |
+|      2 | sanjay   | cs    |   85 |
+|      3 | Shiveush | IT    |   82 |
+|      4 | sangevi  | CT    |   98 |
+|      5 | vignesh  | B.com |   60 |
++--------+----------+-------+------+
+5 rows in set (0.028 sec)
+
+MariaDB [fsd_tasks]> select * from student where mark >80;
++--------+----------+------+------+
+| Rollno | Name     | Dept | mark |
++--------+----------+------+------+
+|      1 | Thiru    | cs   |   90 |
+|      2 | sanjay   | cs   |   85 |
+|      3 | Shiveush | IT   |   82 |
+|      4 | sangevi  | CT   |   98 |
++--------+----------+------+------+
+4 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA | 5600 |
+|       20 | cs       | 3360 |
+|       30 | IT       | 5040 |
+|       50 | CT       | 2800 |
+|       62 | B.com    | 4480 |
+|       70 | Java     | 1000 |
++----------+----------+------+
+6 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> select * from course order by fees asc;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       70 | Java     | 1000 |
+|       50 | CT       | 2800 |
+|       20 | cs       | 3360 |
+|       62 | B.com    | 4480 |
+|       30 | IT       | 5040 |
+|       16 | B.com CA | 5600 |
++----------+----------+------+
+6 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select * from book;
+ERROR 1146 (42S02): Table 'fsd_tasks.book' doesn't exist
+MariaDB [fsd_tasks]> select * from books;
++--------+---------------+-------------+-------+
+| bookid | bookname      | no_of_books | price |
++--------+---------------+-------------+-------+
+|    152 | wings of fire |          45 |   200 |
+|    541 | sql           |          54 |   300 |
+|    641 | java          |          85 |   250 |
++--------+---------------+-------------+-------+
+3 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> select * from books where bookname like '%e';
++--------+---------------+-------------+-------+
+| bookid | bookname      | no_of_books | price |
++--------+---------------+-------------+-------+
+|    152 | wings of fire |          45 |   200 |
++--------+---------------+-------------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from books where bookname like 's%';
++--------+----------+-------------+-------+
+| bookid | bookname | no_of_books | price |
++--------+----------+-------------+-------+
+|    541 | sql      |          54 |   300 |
++--------+----------+-------------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from books where bookname like 'j%';
++--------+----------+-------------+-------+
+| bookid | bookname | no_of_books | price |
++--------+----------+-------------+-------+
+|    641 | java     |          85 |   250 |
++--------+----------+-------------+-------+
+1 row in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from emp;
++-------+----------+----------+------------+------+--------+
+| empno | ename    | job      | hiredate   | sal  | deptno |
++-------+----------+----------+------------+------+--------+
+|    23 | Thiru    | Manager  | 1981-06-12 | 2500 |     10 |
+|    24 | Shiveush | salesman | 1990-01-04 | 2100 |     48 |
+|    25 | Sangevi  | analyst  | 1999-08-30 | 3000 |     50 |
+|    26 | Jhon     | clerk    | 2005-10-25 | 2540 |     56 |
++-------+----------+----------+------------+------+--------+
+4 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> select * from emp where designation='analyst' and salary>2000;
+ERROR 1054 (42S22): Unknown column 'designation' in 'where clause'
+MariaDB [fsd_tasks]> select * from emp where job='analyst' and salary>2000;
+ERROR 1054 (42S22): Unknown column 'salary' in 'where clause'
+MariaDB [fsd_tasks]> select * from emp where job='analyst' and sal>2000;
++-------+---------+---------+------------+------+--------+
+| empno | ename   | job     | hiredate   | sal  | deptno |
++-------+---------+---------+------------+------+--------+
+|    25 | Sangevi | analyst | 1999-08-30 | 3000 |     50 |
++-------+---------+---------+------------+------+--------+
+1 row in set (0.002 sec)
+
+MariaDB [fsd_tasks]> MariaDB [(none)]> ese fsd_tasks;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'ese fsd_tasks' at line 1
+MariaDB [(none)]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| day1               |
+| fsd_tasks          |
+| information_schema |
+| lib                |
+| library            |
+| myshop             |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| port               |
+| reservation        |
+| test               |
++--------------------+
+12 rows in set (0.034 sec)
+
+MariaDB [(none)]>  use fsd_tasks;
+Database changed
+MariaDB [fsd_tasks]> show tables;
++---------------------+
+| Tables_in_fsd_tasks |
++---------------------+
+| books               |
+| course              |
+| department          |
+| emp                 |
+| issuerecords        |
+| memebers            |
+| student             |
++---------------------+
+7 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from emp order by sal;
++-------+----------+----------+------------+------+--------+
+| empno | ename    | job      | hiredate   | sal  | deptno |
++-------+----------+----------+------------+------+--------+
+|    24 | Shiveush | salesman | 1990-01-04 | 2100 |     48 |
+|    23 | Thiru    | Manager  | 1981-06-12 | 2500 |     10 |
+|    26 | Jhon     | clerk    | 2005-10-25 | 2540 |     56 |
+|    25 | Sangevi  | analyst  | 1999-08-30 | 3000 |     50 |
++-------+----------+----------+------------+------+--------+
+4 rows in set (0.027 sec)
+
+MariaDB [fsd_tasks]> create table Customers ( CustomerID INT PRIMARY KEY,Name VARCHAR(100),Age INT,City VARCHAR(50),Email VARCHAR(100),RegisteredDate DATE);
+Query OK, 0 rows affected (0.009 sec)
+
+MariaDB [fsd_tasks]> desc customers;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| CustomerID     | int(11)      | NO   | PRI | NULL    |       |
+| Name           | varchar(100) | YES  |     | NULL    |       |
+| Age            | int(11)      | YES  |     | NULL    |       |
+| City           | varchar(50)  | YES  |     | NULL    |       |
+| Email          | varchar(100) | YES  |     | NULL    |       |
+| RegisteredDate | date         | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+6 rows in set (0.017 sec)
+
+MariaDB [fsd_tasks]> insert into Customers values
+    -> (1, 'Thiru', 30, 'Chennai', 'thiru@gmail.com',  '2023-01-10'),
+    -> (2, 'shivi S', 25, 'Bangalore', 'divya@gmail.com','2023-03-14'),
+    -> (3, 'sanjay', 35, 'Hyderabad', 'ravi@gmail.com',  '2022-10-01'),
+    -> (4, 'Arthi', 28, 'Chennai', 'nisha@gmail.com',  '2023-06-20'),
+    -> (5, 'Hari', 40, 'Mumbai', 'vinod@gmail.com',  '2022-12-05');
+Query OK, 5 rows affected (0.002 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [fsd_tasks]> select * from customers;
++------------+---------+------+-----------+-----------------+----------------+
+| CustomerID | Name    | Age  | City      | Email           | RegisteredDate |
++------------+---------+------+-----------+-----------------+----------------+
+|          1 | Thiru   |   30 | Chennai   | thiru@gmail.com | 2023-01-10     |
+|          2 | shivi S |   25 | Bangalore | divya@gmail.com | 2023-03-14     |
+|          3 | sanjay  |   35 | Hyderabad | ravi@gmail.com  | 2022-10-01     |
+|          4 | Arthi   |   28 | Chennai   | nisha@gmail.com | 2023-06-20     |
+|          5 | Hari    |   40 | Mumbai    | vinod@gmail.com | 2022-12-05     |
++------------+---------+------+-----------+-----------------+----------------+
+5 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from customers where city='chennai';
++------------+-------+------+---------+-----------------+----------------+
+| CustomerID | Name  | Age  | City    | Email           | RegisteredDate |
++------------+-------+------+---------+-----------------+----------------+
+|          1 | Thiru |   30 | Chennai | thiru@gmail.com | 2023-01-10     |
+|          4 | Arthi |   28 | Chennai | nisha@gmail.com | 2023-06-20     |
++------------+-------+------+---------+-----------------+----------------+
+2 rows in set (0.004 sec)
+
+MariaDB [fsd_tasks]> select * from customers where age<30;
++------------+---------+------+-----------+-----------------+----------------+
+| CustomerID | Name    | Age  | City      | Email           | RegisteredDate |
++------------+---------+------+-----------+-----------------+----------------+
+|          2 | shivi S |   25 | Bangalore | divya@gmail.com | 2023-03-14     |
+|          4 | Arthi   |   28 | Chennai   | nisha@gmail.com | 2023-06-20     |
++------------+---------+------+-----------+-----------------+----------------+
+2 rows in set (0.002 sec)
+
+
+MariaDB [fsd_tasks]> exit;

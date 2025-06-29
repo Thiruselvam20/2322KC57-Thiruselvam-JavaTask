@@ -1,0 +1,359 @@
+MariaDB [(none)]> create database FSD_tasks;
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [(none)]> use FSD_tasks;
+Database changed
+MariaDB [FSD_tasks]> create table student(Rollno int primary key,Name varchar(30),Dept varchar(20));
+Query OK, 0 rows affected (0.012 sec)
+
+MariaDB [FSD_tasks]> insert into student values(1,'Thiru','cs');
+Query OK, 1 row affected (0.093 sec)
+
+MariaDB [FSD_tasks]> insert into student values(2,'sanjay','cs');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [FSD_tasks]> insert into student values(3,'Shiveush','IT');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [FSD_tasks]> insert into student values(4,'sangevi','CT');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [FSD_tasks]> insert into student values(5,'vignesh','B.com');
+Query OK, 1 row affected (0.009 sec)
+
+MariaDB [FSD_tasks]> select * from student;
++--------+----------+-------+
+| Rollno | Name     | Dept  |
++--------+----------+-------+
+|      1 | Thiru    | cs    |
+|      2 | sanjay   | cs    |
+|      3 | Shiveush | IT    |
+|      4 | sangevi  | CT    |
+|      5 | vignesh  | B.com |
++--------+----------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [FSD_tasks]> create table course(Courseid int primary key,Cname varchar(20),Fees int);
+ERROR 2006 (HY000): MySQL server has gone away
+No connection. Trying to reconnect...
+ERROR 2002 (HY000): Can't connect to MySQL server on 'localhost' (10061)
+ERROR: Can't connect to the server
+
+unknown [FSD_tasks]> create table course(Courseid int primary key,Cname varchar(20),Fees int);
+No connection. Trying to reconnect...
+Connection id:    8
+Current database: FSD_tasks
+
+Query OK, 0 rows affected (0.010 sec)
+
+MariaDB [FSD_tasks]> desc course;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| Courseid | int(11)     | NO   | PRI | NULL    |       |
+| Cname    | varchar(20) | YES  |     | NULL    |       |
+| Fees     | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+3 rows in set (0.046 sec)
+
+MariaDB [FSD_tasks]> insert into course values(20,'cs',3000);
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [FSD_tasks]> insert into course values(30,'IT',4500);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [FSD_tasks]> insert into course values(50,'CT',2500);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into course values(62,'B.com',4000);
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [FSD_tasks]> insert into course values(16,'B.com CA',5000);
+Query OK, 1 row affected (0.007 sec)
+
+MariaDB [FSD_tasks]> select * from courses;
+ERROR 1146 (42S02): Table 'fsd_tasks.courses' doesn't exist
+MariaDB [FSD_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA | 5000 |
+|       20 | cs       | 3000 |
+|       30 | IT       | 4500 |
+|       50 | CT       | 2500 |
+|       62 | B.com    | 4000 |
++----------+----------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> update course set Fees=Fees+0.12;
+Query OK, 0 rows affected (0.001 sec)
+Rows matched: 5  Changed: 0  Warnings: 0
+
+MariaDB [FSD_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA | 5000 |
+|       20 | cs       | 3000 |
+|       30 | IT       | 4500 |
+|       50 | CT       | 2500 |
+|       62 | B.com    | 4000 |
++----------+----------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> update course set Fees=Fees*0.12;
+Query OK, 5 rows affected (0.008 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+MariaDB [FSD_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA |  600 |
+|       20 | cs       |  360 |
+|       30 | IT       |  540 |
+|       50 | CT       |  300 |
+|       62 | B.com    |  480 |
++----------+----------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> update course set Fees=Fees*1.12;
+Query OK, 5 rows affected (0.003 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+MariaDB [FSD_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA |  672 |
+|       20 | cs       |  403 |
+|       30 | IT       |  605 |
+|       50 | CT       |  336 |
+|       62 | B.com    |  538 |
++----------+----------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> update course set Fees=5000 where Courseid=16;
+Query OK, 1 row affected (0.020 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [FSD_tasks]> update course set Fees=3000 where Courseid=20;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [FSD_tasks]> update course set Fees=4500 where Courseid=30;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [FSD_tasks]> update course set Fees=2500 where Courseid=50;
+Query OK, 1 row affected (0.003 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [FSD_tasks]> update course set Fees=4000 where Courseid=62;
+Query OK, 1 row affected (0.007 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [FSD_tasks]> update course set Fees=Fees*1.12;
+Query OK, 5 rows affected (0.003 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+MariaDB [FSD_tasks]> select * from course;
++----------+----------+------+
+| Courseid | Cname    | Fees |
++----------+----------+------+
+|       16 | B.com CA | 5600 |
+|       20 | cs       | 3360 |
+|       30 | IT       | 5040 |
+|       50 | CT       | 2800 |
+|       62 | B.com    | 4480 |
++----------+----------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> create database library;
+ERROR 1007 (HY000): Can't create database 'library'; database exists
+MariaDB [FSD_tasks]> create database lib;
+Query OK, 1 row affected (0.001 sec)
+
+MariaDB [FSD_tasks]> create table books(bookid int,bookname varchar(20),no.of.books int,price int);
+ERROR 1102 (42000): Incorrect database name 'no'
+MariaDB [FSD_tasks]> create table books(bookid int,bookname varchar(20),no_of_books int,price int);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [FSD_tasks]> desc books;
++-------------+-------------+------+-----+---------+-------+
+| Field       | Type        | Null | Key | Default | Extra |
++-------------+-------------+------+-----+---------+-------+
+| bookid      | int(11)     | YES  |     | NULL    |       |
+| bookname    | varchar(20) | YES  |     | NULL    |       |
+| no_of_books | int(11)     | YES  |     | NULL    |       |
+| price       | int(11)     | YES  |     | NULL    |       |
++-------------+-------------+------+-----+---------+-------+
+4 rows in set (0.013 sec)
+
+MariaDB [FSD_tasks]> create table memebers(memberid int,name varchar(20),email varchar(20));
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [FSD_tasks]> create table issuerecords(issueid int , bookid int, issue_date date,due_date date);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [FSD_tasks]> insert into books values(152,'wings of fire',45,200);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into books values(541,'sql',54,300);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into books values(641,'java',85,250);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into memebers values(1,'Thiru','thiru@gmail.com');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into memebers values(2,'shiveush','shiveush@gmail.com');
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [FSD_tasks]> insert into memebers values(3,'siva','siva@gmail.com');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into issuerecords values(470,152,'2025-01-16','2025-02-16');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into issuerecords values(548,641,'2025-01-20','2025-02-20');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> insert into issuerecords values(784,541,'2025-03-08','2025-04-08');
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [FSD_tasks]> select * from books;
++--------+---------------+-------------+-------+
+| bookid | bookname      | no_of_books | price |
++--------+---------------+-------------+-------+
+|    152 | wings of fire |          45 |   200 |
+|    541 | sql           |          54 |   300 |
+|    641 | java          |          85 |   250 |
++--------+---------------+-------------+-------+
+3 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> select * from memebers;
++----------+----------+--------------------+
+| memberid | name     | email              |
++----------+----------+--------------------+
+|        1 | Thiru    | thiru@gmail.com    |
+|        2 | shiveush | shiveush@gmail.com |
+|        3 | siva     | siva@gmail.com     |
++----------+----------+--------------------+
+3 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> select * from issuerecords;
++---------+--------+------------+------------+
+| issueid | bookid | issue_date | due_date   |
++---------+--------+------------+------------+
+|     470 |    152 | 2025-01-16 | 2025-02-16 |
+|     548 |    641 | 2025-01-20 | 2025-02-20 |
+|     784 |    541 | 2025-03-08 | 2025-04-08 |
++---------+--------+------------+------------+
+3 rows in set (0.000 sec)
+
+MariaDB [FSD_tasks]> show databases;
++--------------------+
+| Database           |
++--------------------+
+| day1               |
+| fsd_tasks          |
+| information_schema |
+| lib                |
+| library            |
+| myshop             |
+| mysql              |
+| performance_schema |
+| phpmyadmin         |
+| port               |
+| reservation        |
+| test               |
++--------------------+
+12 rows in set (0.024 sec)
+
+MariaDB [FSD_tasks]> use fsd_tasks;
+Database changed
+MariaDB [fsd_tasks]> CREATE TABLE emp (
+    ->   empno int primary key,
+    ->   ename varchar(10) default NULL,
+    ->   job varchar(9) default NULL,
+    ->    hiredate date default NULL,
+    ->   sal int default NULL,
+    ->   
+    ->   deptno int default NULL
+    -> );
+Query OK, 0 rows affected (0.008 sec)
+
+MariaDB [fsd_tasks]> MariaDB [(none)]> create table department(deptno int primary key,dname varchar(20),loc varchar(30));
+ERROR 1046 (3D000): No database selected
+MariaDB [(none)]> use fsd_tasks;
+Database changed
+MariaDB [fsd_tasks]> create table department(deptno int primary key,dname varchar(20),loc varchar(30));
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [fsd_tasks]> desc emp;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empno    | int(11)     | NO   | PRI | NULL    |       |
+| ename    | varchar(10) | YES  |     | NULL    |       |
+| job      | varchar(9)  | YES  |     | NULL    |       |
+| hiredate | date        | YES  |     | NULL    |       |
+| sal      | int(11)     | YES  |     | NULL    |       |
+| deptno   | int(11)     | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+6 rows in set (0.040 sec)
+
+MariaDB [fsd_tasks]> insert into emp values(23,'Thiru','Manager','1981-06-12',2500,10);
+Query OK, 1 row affected (0.045 sec)
+
+MariaDB [fsd_tasks]> insert into emp values(24,'Shiveush','salesman','1990-01-04',1500,56);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [fsd_tasks]> insert into emp values(24,'Shiveush','salesman','1990-01-04',1500,6);
+ERROR 1062 (23000): Duplicate entry '24' for key 'PRIMARY'
+MariaDB [fsd_tasks]> insert into emp values(25,'Sangevi','analyst','1999-08-30,,48);
+    '> insert into emp values(25,'Sangevi','analyst','1999-08-30,3000,48);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'Sangevi','analyst','1999-08-30,3000,48)' at line 1
+MariaDB [fsd_tasks]> insert into emp values(25,'Sangevi','analyst','1999-08-30',3000,48);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [fsd_tasks]> insert into emp values(26,'Jhon','clerk','2005-10-25',2540,50);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [fsd_tasks]> select * from emp ;
++-------+----------+----------+------------+------+--------+
+| empno | ename    | job      | hiredate   | sal  | deptno |
++-------+----------+----------+------------+------+--------+
+|    23 | Thiru    | Manager  | 1981-06-12 | 2500 |     10 |
+|    24 | Shiveush | salesman | 1990-01-04 | 1500 |     56 |
+|    25 | Sangevi  | analyst  | 1999-08-30 | 3000 |     48 |
+|    26 | Jhon     | clerk    | 2005-10-25 | 2540 |     50 |
++-------+----------+----------+------------+------+--------+
+4 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> insert into department values(10,'cs','cbe');
+Query OK, 1 row affected (0.006 sec)
+
+MariaDB [fsd_tasks]> insert into department values(56,'CT','chennai');
+Query OK, 1 row affected (0.008 sec)
+
+MariaDB [fsd_tasks]> insert into department values(48,'IT','Trichy');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [fsd_tasks]> insert into department values(50,'B.com','Madurai');
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [fsd_tasks]> select * from department;
++--------+-------+---------+
+| deptno | dname | loc     |
++--------+-------+---------+
+|     10 | cs    | cbe     |
+|     48 | IT    | Trichy  |
+|     50 | B.com | Madurai |
+|     56 | CT    | chennai |
++--------+-------+---------+
+4 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> tee e:2322kc57_Task2.txt

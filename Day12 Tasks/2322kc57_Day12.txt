@@ -1,0 +1,534 @@
+MariaDB [(none)]> show tables;
+ERROR 1046 (3D000): No database selected
+MariaDB [(none)]> use fsd_tasks;
+Database changed
+MariaDB [fsd_tasks]> show tables;
++---------------------+
+| Tables_in_fsd_tasks |
++---------------------+
+| books               |
+| course              |
+| customers           |
+| department          |
+| emp                 |
+| issuerecords        |
+| memebers            |
+| sales               |
+| student             |
++---------------------+
+9 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select * from student;
++--------+----------+-------+------+
+| Rollno | Name     | Dept  | mark |
++--------+----------+-------+------+
+|      1 | Thiru    | cs    |   90 |
+|      2 | sanjay   | cs    |   85 |
+|      3 | Shiveush | IT    |   82 |
+|      4 | sangevi  | CT    |   98 |
+|      5 | vignesh  | B.com |   60 |
++--------+----------+-------+------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> set autocommit=0;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from student;
++--------+----------+-------+
+| Rollno | Name     | Dept  |
++--------+----------+-------+
+|      1 | Thiru    | cs    |
+|      2 | sanjay   | cs    |
+|      3 | Shiveush | IT    |
+|      4 | sangevi  | CT    |
+|      5 | vignesh  | B.com |
++--------+----------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> create table marks(Rollno int,Mark int);
+Query OK, 0 rows affected (0.007 sec)
+
+MariaDB [fsd_tasks]> insert into marks values(1,90);
+Query OK, 1 row affected (0.003 sec)
+
+MariaDB [fsd_tasks]> insert into marks values(2,59);
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [fsd_tasks]> insert into marks values(3,80);
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [fsd_tasks]> insert into marks values(4,75);
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [fsd_tasks]> insert into marks values(5,89);
+Query OK, 1 row affected (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from marks;
++--------+------+
+| Rollno | Mark |
++--------+------+
+|      1 |   90 |
+|      2 |   59 |
+|      3 |   80 |
+|      4 |   75 |
+|      5 |   89 |
++--------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from student s join marks m where s.rollno=m.rollno;
++--------+----------+-------+--------+------+
+| Rollno | Name     | Dept  | Rollno | Mark |
++--------+----------+-------+--------+------+
+|      1 | Thiru    | cs    |      1 |   90 |
+|      2 | sanjay   | cs    |      2 |   59 |
+|      3 | Shiveush | IT    |      3 |   80 |
+|      4 | sangevi  | CT    |      4 |   75 |
+|      5 | vignesh  | B.com |      5 |   89 |
++--------+----------+-------+--------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select s.rollno,s.name,s.dept,m.mark from student s join marks m where s.rollno=m.rollno;
++--------+----------+-------+------+
+| rollno | name     | dept  | mark |
++--------+----------+-------+------+
+|      1 | Thiru    | cs    |   90 |
+|      2 | sanjay   | cs    |   59 |
+|      3 | Shiveush | IT    |   80 |
+|      4 | sangevi  | CT    |   75 |
+|      5 | vignesh  | B.com |   89 |
++--------+----------+-------+------+
+5 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select * from student s where offset=1(select m.mark from marks m order by mark);
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near '(select m.mark from marks m order by mark)' at line 1
+MariaDB [fsd_tasks]> select * from student s where (select m.mark from marks m order by mark);
+ERROR 1242 (21000): Subquery returns more than 1 row
+MariaDB [fsd_tasks]> select * from student s where (select m.mark from marks m order by mark limit 1);
++--------+----------+-------+
+| Rollno | Name     | Dept  |
++--------+----------+-------+
+|      1 | Thiru    | cs    |
+|      2 | sanjay   | cs    |
+|      3 | Shiveush | IT    |
+|      4 | sangevi  | CT    |
+|      5 | vignesh  | B.com |
++--------+----------+-------+
+5 rows in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select s.rollno,s.name,s.dept from student s where rollno=(select m.rollno from marks m order by mark limit 1 );
++--------+--------+------+
+| rollno | name   | dept |
++--------+--------+------+
+|      2 | sanjay | cs   |
++--------+--------+------+
+1 row in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select s.rollno,s.name,s.dept from student s where rollno=(select m.rollno from marks m order by mark desc limit 1 );
++--------+-------+------+
+| rollno | name  | dept |
++--------+-------+------+
+|      1 | Thiru | cs   |
++--------+-------+------+
+1 row in set (0.000 sec)
+
+MariaDB [fsd_tasks]> select s.rollno, s.name, s.dept, m.mark
+    -> from student s
+    -> join marks m ON s.rollno = m.rollno where m.mark = (select max(mark) from marks);
++--------+-------+------+------+
+| rollno | name  | dept | mark |
++--------+-------+------+------+
+|      1 | Thiru | cs   |   90 |
++--------+-------+------+------+
+1 row in set (0.004 sec)
+
+MariaDB [fsd_tasks]> select * from customers;
++------------+---------+------+-----------+-----------------+----------------+
+| CustomerID | Name    | Age  | City      | Email           | RegisteredDate |
++------------+---------+------+-----------+-----------------+----------------+
+|          1 | Thiru   |   30 | Chennai   | thiru@gmail.com | 2023-01-10     |
+|          2 | shivi S |   25 | Bangalore | shivi@gmail.com | 2023-03-14     |
+|          3 | sanjay  |   35 | Hyderabad | sanj@gmail.com  | 2022-10-01     |
+|          4 | Arthi   |   28 | Chennai   | arthi@gmail.com | 2023-06-20     |
+|          5 | Hari    |   40 | Mumbai    | Hari@gmail.com  | 2022-12-05     |
++------------+---------+------+-----------+-----------------+----------------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> alter table customers drop RegisteredDate;
+Query OK, 0 rows affected (0.013 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [fsd_tasks]> select * from customers;
++------------+---------+------+-----------+-----------------+
+| CustomerID | Name    | Age  | City      | Email           |
++------------+---------+------+-----------+-----------------+
+|          1 | Thiru   |   30 | Chennai   | thiru@gmail.com |
+|          2 | shivi S |   25 | Bangalore | shivi@gmail.com |
+|          3 | sanjay  |   35 | Hyderabad | sanj@gmail.com  |
+|          4 | Arthi   |   28 | Chennai   | arthi@gmail.com |
+|          5 | Hari    |   40 | Mumbai    | Hari@gmail.com  |
++------------+---------+------+-----------+-----------------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> create table orders (order_id INT PRIMARY KEY,customer_name VARCHAR(100),amount int);
+Query OK, 0 rows affected (0.014 sec)
+
+MariaDB [fsd_tasks]> insert into orders (order_id, customer_name, amount) values
+    -> (31, 'Thiru', 1500),
+    -> (32, 'shivi S', 2300),
+    -> (33, 'sanjay', 1750),
+    -> (34, 'Arthi', 980),
+    -> (35, 'Hari', 1200);
+Query OK, 5 rows affected (0.006 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [fsd_tasks]> select * from customers c join orders o where c.name=o.Customer_name;
++------------+---------+------+-----------+-----------------+----------+---------------+--------+
+| CustomerID | Name    | Age  | City      | Email           | order_id | customer_name | amount |
++------------+---------+------+-----------+-----------------+----------+---------------+--------+
+|          1 | Thiru   |   30 | Chennai   | thiru@gmail.com |       31 | Thiru         |   1500 |
+|          2 | shivi S |   25 | Bangalore | shivi@gmail.com |       32 | shivi S       |   2300 |
+|          3 | sanjay  |   35 | Hyderabad | sanjgmail.com   |       33 | sanjay        |   1750 |
+|          4 | Arthi   |   28 | Chennai   | arthi@gmail.com |       34 | Arthi         |    980 |
+|          5 | Hari    |   40 | Mumbai    | Hari@gmail.com  |       35 | Hari          |   1200 |
++------------+---------+------+-----------+-----------------+----------+---------------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> show tables;
++---------------------+
+| Tables_in_fsd_tasks |
++---------------------+
+| books               |
+| course              |
+| customers           |
+| department          |
+| emp                 |
+| issuerecords        |
+| marks               |
+| memebers            |
+| orders              |
+| sales               |
+| student             |
++---------------------+
+11 rows in set (0.010 sec)
+
+MariaDB [fsd_tasks]> create table products (product_id INT PRIMARY KEY,product_name VARCHAR(100),price int);
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [fsd_tasks]> insert into  products (product_id, product_name, price) VALUES
+    -> (201, 'Laptop', 55000),
+    -> (202, 'Printer', 12000),
+    -> (203, 'Keyboard', 1500),
+    -> (204, 'Monitor', 8000),
+    -> (205, 'Mouse', 700);
+Query OK, 5 rows affected (0.006 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+MariaDB [fsd_tasks]> select * from products;
++------------+--------------+-------+
+| product_id | product_name | price |
++------------+--------------+-------+
+|        201 | Laptop       | 55000 |
+|        202 | Printer      | 12000 |
+|        203 | Keyboard     |  1500 |
+|        204 | Monitor      |  8000 |
+|        205 | Mouse        |   700 |
++------------+--------------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> alter table  customers add (product_id int);
+Query OK, 0 rows affected (0.015 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+MariaDB [fsd_tasks]> desc customers;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| CustomerID | int(11)      | NO   | PRI | NULL    |       |
+| Name       | varchar(100) | YES  |     | NULL    |       |
+| Age        | int(11)      | YES  |     | NULL    |       |
+| City       | varchar(50)  | YES  |     | NULL    |       |
+| Email      | varchar(100) | YES  |     | NULL    |       |
+| product_id | int(11)      | YES  |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+6 rows in set (0.043 sec)
+
+MariaDB [fsd_tasks]> update  customers set product_id=201 where customer_id=1;
+ERROR 1054 (42S22): Unknown column 'customer_id' in 'where clause'
+MariaDB [fsd_tasks]> update  customers set product_id=201 where customerid=1;
+Query OK, 1 row affected (0.010 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [fsd_tasks]> update  customers set product_id=202 where customerid=2;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [fsd_tasks]> update  customers set product_id=203 where customerid=3;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [fsd_tasks]> update  customers set product_id=204 where customerid=4;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [fsd_tasks]> update  customers set product_id=205 where customerid=5;
+Query OK, 1 row affected (0.001 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+MariaDB [fsd_tasks]> select * from customers;
++------------+---------+------+-----------+-----------------+------------+
+| CustomerID | Name    | Age  | City      | Email           | product_id |
++------------+---------+------+-----------+-----------------+------------+
+|          1 | Thiru   |   30 | Chennai   | thiru@gmail.com |        201 |
+|          2 | shivi S |   25 | Bangalore | shivi@gmail.com |        202 |
+|          3 | sanjay  |   35 | Hyderabad | sanj@gmail.com  |        203 |
+|          4 | Arthi   |   28 | Chennai   | arthi@gmail.com |        204 |
+|          5 | Hari    |   40 | Mumbai    | Hari@gmail.com  |        205 |
++------------+---------+------+-----------+-----------------+------------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select * from orders;
++----------+---------------+--------+
+| order_id | customer_name | amount |
++----------+---------------+--------+
+|       31 | Thiru         |   1500 |
+|       32 | shivi S       |   2300 |
+|       33 | sanjay        |   1750 |
+|       34 | Arthi         |    980 |
+|       35 | Hari          |   1200 |
++----------+---------------+--------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> select * from products;
++------------+--------------+-------+
+| product_id | product_name | price |
++------------+--------------+-------+
+|        201 | Laptop       | 55000 |
+|        202 | Printer      | 12000 |
+|        203 | Keyboard     |  1500 |
+|        204 | Monitor      |  8000 |
+|        205 | Mouse        |   700 |
++------------+--------------+-------+
+5 rows in set (0.001 sec)
+
+MariaDB [fsd_tasks]> SELECT 
+    ->     o.order_id,
+    ->     c.CustomerID,
+    ->     c.Name AS customer_name,
+    ->     c.City,
+    ->     c.Email,
+    ->     p.product_name,
+    ->     p.price,
+    ->     o.amount
+    ->  FROM orders o JOIN customers c ON o.customer_name = c.Name JOIN products p ON c.product_id = p.product_id;
++----------+------------+---------------+-----------+-----------------+--------------+-------+--------+
+| order_id | CustomerID | customer_name | City      | Email           | product_name | price | amount |
++----------+------------+---------------+-----------+-----------------+--------------+-------+--------+
+|       31 |          1 | Thiru         | Chennai   | thiru@gmail.com | Laptop       | 55000 |   1500 |
+|       32 |          2 | shivi S       | Bangalore | shivi@gmail.com | Printer      | 12000 |   2300 |
+|       33 |          3 | sanjay        | Hyderabad | sanj@gmail.com  | Keyboard     |  1500 |   1750 |
+|       34 |          4 | Arthi         | Chennai   | arthi@gmail.com | Monitor      |  8000 |    980 |
+|       35 |          5 | Hari          | Mumbai    | Hari@gmail.com  | Mouse        |   700 |   1200 |
++----------+------------+---------------+-----------+-----------------+--------------+-------+--------+
+5 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> SELECT 
+    ->     o.order_id,
+    ->     c.Name,
+    ->     c.City,
+    ->     p.product_name,
+    ->     o.amount
+    -> FROM orders o JOIN customers c ON o.customer_name = c.Name JOIN products p ON c.product_id = p.product_id WHERE c.City = 'Chennai';
++----------+-------+---------+--------------+--------+
+| order_id | Name  | City    | product_name | amount |
++----------+-------+---------+--------------+--------+
+|       31 | Thiru | Chennai | Laptop       |   1500 |
+|       34 | Arthi | Chennai | Monitor      |    980 |
++----------+-------+---------+--------------+--------+
+2 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> SELECT 
+    ->     o.order_id,
+    ->     c.Name,
+    ->     p.product_name,
+    ->     o.amount
+    -> FROM orders o
+    -> JOIN customers c ON o.customer_name = c.Name
+    -> JOIN products p ON c.product_id = p.product_id
+    -> WHERE o.amount > 1500;
++----------+---------+--------------+--------+
+| order_id | Name    | product_name | amount |
++----------+---------+--------------+--------+
+|       32 | shivi S | Printer      |   2300 |
+|       33 | sanjay  | Keyboard     |   1750 |
++----------+---------+--------------+--------+
+2 rows in set (0.002 sec)
+
+MariaDB [fsd_tasks]> SELECT 
+    ->     o.order_id,
+    ->     c.Name AS customer_name,
+    ->     p.product_name,
+    ->     p.price AS unit_price,
+    ->     o.amount AS paid_amount,
+    ->     p.price - o.amount AS remaining_due
+    -> FROM orders o
+    -> JOIN customers c ON o.customer_name = c.Name
+    -> JOIN products p ON c.product_id = p.product_id;
++----------+---------------+--------------+------------+-------------+---------------+
+| order_id | customer_name | product_name | unit_price | paid_amount | remaining_due |
++----------+---------------+--------------+------------+-------------+---------------+
+|       31 | Thiru         | Laptop       |      55000 |        1500 |         53500 |
+|       32 | shivi S       | Printer      |      12000 |        2300 |          9700 |
+|       33 | sanjay        | Keyboard     |       1500 |        1750 |          -250 |
+|       34 | Arthi         | Monitor      |       8000 |         980 |          7020 |
+|       35 | Hari          | Mouse        |        700 |        1200 |          -500 |
++----------+---------------+--------------+------------+-------------+---------------+
+5 rows in set (0.003 sec)
+
+MariaDB [fsd_tasks]> create database college;
+Query OK, 1 row affected (0.002 sec)
+
+MariaDB [fsd_tasks]> use college;
+Database changed
+MariaDB [college]> CREATE TABLE departments (
+    ->     dept_id INT PRIMARY KEY,
+    ->     dept_name VARCHAR(100)
+    -> );
+Query OK, 0 rows affected (0.005 sec)
+
+MariaDB [college]> CREATE TABLE students (
+    ->     rollno INT PRIMARY KEY,
+    ->     name VARCHAR(100),
+    ->     dept_id INT,
+    ->     FOREIGN KEY (dept_id) REFERENCES departments(dept_id)
+    -> );
+Query OK, 0 rows affected (0.019 sec)
+
+MariaDB [college]> 
+MariaDB [college]> CREATE TABLE marks (
+    ->     id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     rollno INT,
+    ->     subject VARCHAR(50),
+    ->     mark INT,
+    ->     FOREIGN KEY (rollno) REFERENCES students(rollno)
+    -> );
+Query OK, 0 rows affected (0.017 sec)
+
+MariaDB [college]> INSERT INTO departments VALUES
+    -> (1, 'CSE'),
+    -> (2, 'ECE'),
+    -> (3, 'MECH');
+Query OK, 3 rows affected (0.003 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+MariaDB [college]> INSERT INTO students VALUES
+    -> (101, 'Alice', 1),
+    -> (102, 'Bob', 1),
+    -> (103, 'Charlie', 2),
+    -> (104, 'David', 3);
+Query OK, 4 rows affected (0.001 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+MariaDB [college]> INSERT INTO marks (rollno, subject, mark) VALUES
+    -> (101, 'Maths', 85),
+    -> (101, 'Science', 90),
+    -> (102, 'Maths', 70),
+    -> (103, 'Science', 88),
+    -> (104, 'Maths', 75),
+    -> (104, 'Science', 65);
+Query OK, 6 rows affected (0.001 sec)
+Records: 6  Duplicates: 0  Warnings: 0
+
+MariaDB [college]> select * from departments;
++---------+-----------+
+| dept_id | dept_name |
++---------+-----------+
+|       1 | CSE       |
+|       2 | ECE       |
+|       3 | MECH      |
++---------+-----------+
+3 rows in set (0.000 sec)
+
+MariaDB [college]> select * from students;
++--------+---------+---------+
+| rollno | name    | dept_id |
++--------+---------+---------+
+|    101 | Alice   |       1 |
+|    102 | Bob     |       1 |
+|    103 | Charlie |       2 |
+|    104 | David   |       3 |
++--------+---------+---------+
+4 rows in set (0.000 sec)
+
+MariaDB [college]> select * from marks;
++----+--------+---------+------+
+| id | rollno | subject | mark |
++----+--------+---------+------+
+|  1 |    101 | Maths   |   85 |
+|  2 |    101 | Science |   90 |
+|  3 |    102 | Maths   |   70 |
+|  4 |    103 | Science |   88 |
+|  5 |    104 | Maths   |   75 |
+|  6 |    104 | Science |   65 |
++----+--------+---------+------+
+6 rows in set (0.001 sec)
+
+MariaDB [college]> SELECT 
+    ->     d.dept_name,
+    ->     s.rollno,
+    ->     s.name AS student_name,
+    ->     m.subject,
+    ->     m.mark
+    -> FROM students s
+    -> JOIN departments d ON s.dept_id = d.dept_id
+    -> JOIN marks m ON s.rollno = m.rollno
+    -> ORDER BY d.dept_name, s.rollno, m.subject;
++-----------+--------+--------------+---------+------+
+| dept_name | rollno | student_name | subject | mark |
++-----------+--------+--------------+---------+------+
+| CSE       |    101 | Alice        | Maths   |   85 |
+| CSE       |    101 | Alice        | Science |   90 |
+| CSE       |    102 | Bob          | Maths   |   70 |
+| ECE       |    103 | Charlie      | Science |   88 |
+| MECH      |    104 | David        | Maths   |   75 |
+| MECH      |    104 | David        | Science |   65 |
++-----------+--------+--------------+---------+------+
+6 rows in set (0.003 sec)
+
+MariaDB [college]> SELECT 
+    ->     d.dept_name,
+    ->     s.rollno,
+    ->     s.name AS student_name,
+    ->     AVG(m.mark) AS average_mark
+    -> FROM students s
+    -> JOIN departments d ON s.dept_id = d.dept_id
+    -> JOIN marks m ON s.rollno = m.rollno
+    -> GROUP BY d.dept_name, s.rollno, s.name
+    -> ORDER BY d.dept_name, average_mark DESC;
++-----------+--------+--------------+--------------+
+| dept_name | rollno | student_name | average_mark |
++-----------+--------+--------------+--------------+
+| CSE       |    101 | Alice        |      87.5000 |
+| CSE       |    102 | Bob          |      70.0000 |
+| ECE       |    103 | Charlie      |      88.0000 |
+| MECH      |    104 | David        |      70.0000 |
++-----------+--------+--------------+--------------+
+4 rows in set (0.003 sec)
+
+MariaDB [college]> SELECT
+    ->     d.dept_name,
+    ->     AVG(m.mark) AS average_department_mark
+    -> FROM students s
+    -> JOIN departments d ON s.dept_id = d.dept_id
+    -> JOIN marks m ON s.rollno = m.rollno
+    -> GROUP BY d.dept_name
+    -> ORDER BY average_department_mark DESC;
++-----------+-------------------------+
+| dept_name | average_department_mark |
++-----------+-------------------------+
+| ECE       |                 88.0000 |
+| CSE       |                 81.6667 |
+| MECH      |                 70.0000 |
++-----------+-------------------------+
+3 rows in set (0.001 sec)
+
+MariaDB [college]> exit;
